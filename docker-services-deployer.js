@@ -7,7 +7,6 @@ var async = require('async');
 var _ = require('lodash');
 var url = require('url');
 var request = require('request');
-var assert = require('assert');
 
 function main (cfg, cb) {
   var docker = new Docker(cfg.docker);
@@ -17,8 +16,8 @@ function main (cfg, cb) {
   }
 
   function pullImage (service, cb) {
-    assert.ok(service.tag, 'No service \'tag\': ' + util.inspect(service));
-    assert.ok(service.registry, 'No service \'registry\': ' + util.inspect(service));
+    if (!service.tag) return cb(new Error('No service \'tag\': ' + util.inspect(service)));
+    if (!service.registry) return cb(new Error('No service \'registry\': ' + util.inspect(service)));
 
     var image = service.registry + ':' + service.tag;
     console.log('Pulling: ', image);
@@ -87,7 +86,10 @@ function main (cfg, cb) {
         if (!container) return cb(null, container);
         debug('stopping container', container);
         container.stop(function (err) {
-          if (err) return cb(err);
+          if (err) {
+            if (err.statusCode === 304) return cb(null, container); // already stopped
+            return cb(err);
+          }
           return cb(null, container);
         });
       },
