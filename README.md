@@ -9,7 +9,7 @@ $ npm install -g docker-services-deployer
 $ docker-services-deployer <config-file>
 ```
 
-Note that <config-file> can be a local file on disk or a remote url, e.g. a file on S3, an api endpoint, or whatever.
+Note that `<config-file>` can be a local file on disk or a remote url, e.g. a file on S3, an api endpoint, or whatever.
 
 ## Config file
 
