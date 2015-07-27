@@ -134,8 +134,15 @@ function main (cfg, cb) {
         MaximumRetryCount: 5
       }
     };
-    opts.ExposedPorts[service.port + '/tcp'] = {};
-    opts.HostConfig.PortBindings[service.port + '/tcp'] = [{ HostPort: '' + service.port }];
+
+    if (service.port) {
+      opts.ExposedPorts[service.port + '/tcp'] = {};
+      opts.HostConfig.PortBindings[service.port + '/tcp'] = [{ HostPort: '' + service.port }];
+    }
+
+    if (service.links) {
+      opts.HostConfig.Links = service.links;
+    }
     console.log('Creating container: ', opts);
     docker.createContainer(opts, cb);
   }

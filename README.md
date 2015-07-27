@@ -24,6 +24,7 @@ There are two parts to the config file, your 'docker' options, and the definitio
     "registry": "mydockerregistry.somewhere.com/myorg/service1",
     "tag": "latest"
     "port": 1234,
+    "links": ["service2:service2"],
     "cmd": [
       "node",
       "service.js"
