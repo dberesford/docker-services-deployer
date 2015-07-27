@@ -1,6 +1,6 @@
 {
   "name": "docker-services-deployer",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Simply Tool for deploying your services to Docker",
   "main": "docker-services-deployer.js",
   "scripts": {

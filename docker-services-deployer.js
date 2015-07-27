@@ -190,10 +190,7 @@ function addHostIp(env) {
 
 var argv = require('minimist')(process.argv.slice(2));
 var servicesFile = argv._[0];
-if (!servicesFile) {
-  console.error('Usage: docker-services-deployer <services-file>');
-  process.exit(1);
-}
+if (!servicesFile) fatal('Usage: docker-services-deployer <services-file>');
 
 // load the config json file, can be a remote url
 function loadConfigFile (file, cb) {
@@ -213,11 +210,17 @@ function loadConfigFile (file, cb) {
   });
 }
 
+function fatal(err) {
+  console.error(err);
+  process.exit(1);
+}
+
 loadConfigFile(servicesFile, function (err, cfg) {
-  if (err) return console.error(err);
+  if (err) return fatal(err);
+
   debug('cfg', cfg);
   main(cfg, function (err, results) {
-    if (err) console.error('ERROR: ', err);
+    if (err) return fatal(err);
     process.exit();
   });
 });
