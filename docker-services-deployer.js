@@ -119,6 +119,7 @@ function main (cfg, cb) {
   }
 
   function createContainer (service, cb) {
+    addHostIp(service.env);
     var image = service.registry;
     var opts = {
       Image: image + ':' + service.tag,
@@ -169,6 +170,23 @@ function main (cfg, cb) {
     }
   ], cb);
 };
+
+function addHostIp(env) {
+  var os = require('os');
+  var ifaces = os.networkInterfaces();
+  var hostIp;
+  var eth0 = ifaces['eth0'] || ifaces['en0'];
+  if (eth0) {
+    var v4 = _.findWhere(eth0, {family: 'IPv4'});
+    if (v4) {
+      hostIp = v4.address;
+    }
+  }
+  if (hostIp) {
+    debug('addHostIp:', hostIp);
+    env.push('DOCKER_HOST_IP=' + hostIp);
+  }
+}
 
 var argv = require('minimist')(process.argv.slice(2));
 var servicesFile = argv._[0];

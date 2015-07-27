@@ -39,6 +39,10 @@ There are two parts to the config file, your 'docker' options, and the definitio
 
 The `docker` config object gets passed on directly to [dockerode](https://www.npmjs.com/package/dockerode), see there for details.
 
+Note that `link` and `port` are optional above.
+
+Also note that one additional environment variable is set: `DOCKER_HOST_IP`, and is set to the hosts eth0 ip address (this is an alternative way of enabling services to talk to each other). 
+
 ## What it does / how it works
 
 `docker-services-deployer` connects to docker, and then does the following to make sure docker is running the specified services at the correct version (tag):
