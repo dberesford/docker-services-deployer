@@ -144,6 +144,11 @@ function main (cfg, cb) {
     if (service.links) {
       opts.HostConfig.Links = service.links;
     }
+
+    if (service.binds) {
+      opts.HostConfig.Binds = service.binds;
+    }
+
     console.log('Creating container: ', opts);
     docker.createContainer(opts, cb);
   }
