@@ -34,7 +34,7 @@ function main (cfg, cb) {
         if (last.errorDetail) return cb(last);
 
         // TODO - YUCK - has to be a better way of doing this
-        cb(err, last.status.indexOf('Image is up to date') === -1);
+        cb(null, last.status.indexOf('Image is up to date') === -1);
       }
 
       function onProgress (event) {
@@ -128,11 +128,11 @@ function main (cfg, cb) {
       Env: service.env,
       ExposedPorts: {},
       HostConfig: {
-        PortBindings: {}
-      },
-      RestartPolicy: {
-        Name: 'always',
-        MaximumRetryCount: 5
+        PortBindings: {},
+        RestartPolicy: {
+          Name: service.restartPolicyName || 'always',
+          MaximumRetryCount: service.restartPolicyMaximumRetryCount || 10
+        }
       }
     };
 
